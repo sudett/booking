@@ -17,7 +17,7 @@ const Header = () => {
         <div className="header__top">
           <ul className="header__list">
             <li className="header__item">
-              <Link className="header__link" to="/">
+              <Link className="header__link header__link--active" to="/">
                 <FaBed className="icon" />
                 <span>Stays</span>
               </Link>
