@@ -12,6 +12,10 @@ export const INITIAL_STATE = {
     children: 0,
     rooms: 1,
   },
+  price: {
+    minPrice: 0,
+    maxPrice: 0,
+  },
 };
 
 export const generalReducer = (state = INITIAL_STATE, action) => {
@@ -35,6 +39,12 @@ export const generalReducer = (state = INITIAL_STATE, action) => {
           ...state.options,
           [action.payload.option]: action.payload.value,
         },
+      };
+
+    case actionTypes.SET_PRICE:
+      return {
+        ...state,
+        price: { ...state.price, [action.payload.item]: action.payload.value },
       };
 
     default:

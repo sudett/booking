@@ -4,6 +4,7 @@ import HomePage from "./pages/home-page/HomePage";
 import HotelsPage from "./pages/hotels-page/HotelsPage";
 import SingleHotel from "./pages/single-hotel/SingleHotel";
 import Header from "./components/header/Header";
+import Footer from "./components/footer/Footer";
 
 import "./App.css";
 
@@ -18,6 +19,7 @@ function App() {
           <Route path=":hotelId" element={<SingleHotel />} />
         </Route>
       </Routes>
+      <Footer />
     </div>
   );
 }

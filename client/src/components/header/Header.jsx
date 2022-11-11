@@ -53,10 +53,12 @@ const Header = () => {
           </div>
         </div>
 
-        <div>
-          <h1 className="header__title">Find your next stay</h1>
-          <p>Search deals on hotels, homes, and much more...</p>
-        </div>
+        {page === "home" && (
+          <div>
+            <h1 className="header__title">Find your next stay</h1>
+            <p>Search deals on hotels, homes, and much more...</p>
+          </div>
+        )}
       </header>
     </div>
   );
