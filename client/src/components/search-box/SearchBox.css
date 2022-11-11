@@ -1,6 +1,7 @@
 .search-box {
-  position: fixed;
-  top: 0;
+  position: sticky;
+  top: 2rem;
+  align-self: flex-start;
   width: 28rem;
   background-color: var(--color-yellow-primary);
   border-radius: 0.5rem;

@@ -15,13 +15,13 @@ const SearchDropdown = () => {
     if (type === "decrease")
       dispatch({
         type: actionTypes.SET_OPTIONS,
-        payload: { option, value: options[option] - 1 },
+        payload: { option, value: +options[option] - 1 },
       });
 
     if (type === "increase")
       dispatch({
         type: actionTypes.SET_OPTIONS,
-        payload: { option, value: options[option] + 1 },
+        payload: { option, value: +options[option] + 1 },
       });
   };
 
