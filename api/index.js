@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 
 import hotelRoute from "./routes/hotel.js";
+import authRoute from "./routes/auth.js";
 
 dotenv.config();
 
@@ -26,11 +27,15 @@ const app = express();
 app.use(express.json());
 
 app.use("/api/hotels", hotelRoute);
+app.use("/api/auth", authRoute);
 
 // error handling middleware
 app.use((err, req, res, next) => {
-  const { status, message } = err;
-  res.status(status || 500).json(message || "Something went wrong!");
+  const { status, message, stack } = err;
+  res.status(status || 500).json({
+    message: message || "Something went wrong!",
+    stack,
+  });
 });
 
 app.listen(8800, () => {
