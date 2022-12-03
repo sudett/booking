@@ -1,4 +1,5 @@
 import bcryptjs from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 import User from "../models/User.js";
 
@@ -36,9 +37,18 @@ export const loginUser = async (req, res, next) => {
     if (!passIsCorrect)
       return next(errorHandling(400, "Password or username is not correct!"));
 
+    // create token for user
+    const token = jwt.sign(
+      { id: user._id, isAdmin: user.isAdmin },
+      process.env.JWT_SECRETKEY
+    );
+
     const { password, isAdmin, ...otherUserInfo } = user._doc;
 
-    res.status(200).json(otherUserInfo);
+    res
+      .cookie("access_token", token, { httpOnly: true })
+      .status(200)
+      .json(otherUserInfo);
   } catch (err) {
     next(errorHandling(err.status, err.message));
   }
