@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import hotelRoute from "./routes/hotel.js";
 import authRoute from "./routes/auth.js";
 import userRouter from "./routes/user.js";
+import roomRouter from "./routes/room.js";
 
 dotenv.config();
 
@@ -33,6 +34,7 @@ app.use(express.json());
 app.use("/api/hotels", hotelRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRouter);
+app.use("/api/rooms", roomRouter);
 
 // error handling middleware
 app.use((err, req, res, next) => {
