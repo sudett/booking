@@ -1,5 +1,7 @@
 import React from "react";
 
+import { useFetch } from "../../hooks/useFetch";
+
 import "./FavoriteHomes.css";
 
 const favorites = [
@@ -10,23 +12,35 @@ const favorites = [
 ];
 
 const FavoriteHomes = () => {
+  const { data, loading } = useFetch(
+    "http://localhost:8800/api/hotels?featured=true&limit=4&min=100&max=500"
+  );
+
   return (
     <div className="favorites">
       <h2 className="title">Homes guests love</h2>
       <div className="favorites__container">
-        {favorites.map((favorite, idx) => (
-          <div key={idx}>
-            <img className="favorite__img" src={favorite} alt="hotel" />
-            <h4 className="favorite__title">Windsor Tower Hotel</h4>
-            <span className="favorite__location">Prague</span>
-            <p>Starting from $14,678,250</p>
-            <p>
-              <span className="favorite__rate">8.2</span>
-              <span>Excellent .</span>
-              <span>689 reviews</span>
-            </p>
-          </div>
-        ))}
+        {loading
+          ? "LOADING"
+          : data?.map((item, idx) => (
+              <div key={idx}>
+                <img
+                  className="favorite__img"
+                  src={item.photos[0] || favorites[idx]}
+                  alt={item.name}
+                />
+                <h4 className="favorite__title">{item.name}</h4>
+                <span className="favorite__location">{item.city}</span>
+                <p>Starting from ${item.cheapestPrice}</p>
+                {item.rating && (
+                  <p>
+                    <span className="favorite__rate">{item.rating}</span>
+                    <span>Excellent .</span>
+                    <span>689 reviews</span>
+                  </p>
+                )}
+              </div>
+            ))}
       </div>
     </div>
   );
