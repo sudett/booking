@@ -1,4 +1,5 @@
 import React from "react";
+import { useFetch } from "../../hooks/useFetch";
 
 import "./Properties.css";
 
@@ -11,17 +12,34 @@ const properties = [
 ];
 
 const Properties = () => {
+  const { data, loading } = useFetch(
+    "http://localhost:8800/api/hotels/countbytype?types=hotel,apartment,resort,villa,cabin"
+  );
+
   return (
     <div className="properties">
       <h2 className="title">Browse by property type</h2>
       <div className="properties__container">
-        {properties.map((property, idx) => (
-          <div key={idx}>
-            <img className="property__img" src={property} alt="property" />
-            <h4>Hotels</h4>
-            <h5>587 hotels</h5>
-          </div>
-        ))}
+        {loading
+          ? "LOADING....."
+          : data?.map((item, idx) => (
+              <div key={idx}>
+                <img
+                  className="property__img"
+                  src={properties[idx]}
+                  alt={item.property}
+                />
+                <h4>
+                  {item.property.replace(
+                    item.property[0],
+                    item.property[0].toUpperCase()
+                  )}
+                </h4>
+                <h5>
+                  {item.quantity} {item.property + "s"}
+                </h5>
+              </div>
+            ))}
       </div>
     </div>
   );

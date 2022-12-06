@@ -60,3 +60,45 @@ export const deleteHotel = async (req, res, next) => {
     next(errorHandling(err.status, err.message));
   }
 };
+
+// count by city
+export const countByCity = async (req, res, next) => {
+  try {
+    const cities = req.query.cities.split(",");
+
+    const quantities = await Promise.all(
+      cities.map((city) =>
+        Hotel.countDocuments({
+          city: city.replace(city[0], city[0].toUpperCase()),
+        })
+      )
+    );
+
+    res.status(200).json(
+      quantities.map((q, i) => ({
+        city: cities[i],
+        quantity: q,
+      }))
+    );
+  } catch (err) {
+    next(errorHandling(err.status, err.message));
+  }
+};
+
+// count by type
+export const countByType = async (req, res, next) => {
+  try {
+    const types = req.query.types.split(",");
+    const quantities = await Promise.all(
+      types.map((type) => Hotel.countDocuments({ type }))
+    );
+
+    res
+      .status(200)
+      .json(
+        quantities.map((quantity, idx) => ({ property: types[idx], quantity }))
+      );
+  } catch (err) {
+    next(errorHandling(err.status, err.message));
+  }
+};

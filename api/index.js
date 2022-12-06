@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 
 import hotelRoute from "./routes/hotel.js";
 import authRoute from "./routes/auth.js";
@@ -25,6 +26,12 @@ const connect = async () => {
 const app = express();
 
 // middlewares
+const corsOptions = {
+  origin: "http://localhost:3000",
+  credentials: true,
+  optionSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
 
 app.use(cookieParser());
 

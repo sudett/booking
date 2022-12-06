@@ -1,4 +1,5 @@
 import React from "react";
+import { useFetch } from "../../hooks/useFetch";
 
 import "./Cities.css";
 
@@ -9,17 +10,25 @@ const cities = [
 ];
 
 const Cities = () => {
+  const { loading, data, errMessage } = useFetch(
+    "http://localhost:8800/api/hotels/countbycity?cities=london,paris,madrid"
+  );
+
   return (
     <div className="cities">
-      {cities.map((city, idx) => (
-        <div key={idx} className="cities__group">
-          <img className="cities__image" src={city} alt="city" />
-          <div className="title__container">
-            <h2>Berlin</h2>
-            <h3>250 properties</h3>
-          </div>
-        </div>
-      ))}
+      {loading
+        ? "LOADING....."
+        : data?.map(({ city, quantity }, idx) => (
+            <div key={idx} className="cities__group">
+              <img className="cities__image" src={cities[idx]} alt={city} />
+              <div className="title__container">
+                <h2>
+                  {city.toLowerCase().replace(city[0], city[0].toUpperCase())}
+                </h2>
+                <h3>{quantity} properties</h3>
+              </div>
+            </div>
+          ))}
     </div>
   );
 };

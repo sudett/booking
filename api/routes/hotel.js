@@ -5,11 +5,16 @@ import {
   getAllHotels,
   updateHotel,
   deleteHotel,
+  countByCity,
+  countByType,
 } from "../controllers/hotel.js";
 
 import { verifyAdmin } from "../utils/verifyToken.js";
 
 const Router = express.Router();
+
+Router.get("/countbycity", countByCity);
+Router.get("/countbytype", countByType);
 
 Router.post("/", verifyAdmin, createHotel);
 Router.get("/", getAllHotels);
