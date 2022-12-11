@@ -13,8 +13,8 @@ export const INITIAL_STATE = {
     rooms: 1,
   },
   price: {
-    minPrice: 0,
-    maxPrice: 0,
+    minPrice: 100,
+    maxPrice: 1000,
   },
 };
 

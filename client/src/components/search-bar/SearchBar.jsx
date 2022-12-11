@@ -37,7 +37,7 @@ const SearchBar = () => {
           type="search"
           className="search__location"
           id="location"
-          placeholder="Where are you going? Berlin, Madrid, Paris..."
+          placeholder="Where are you going? London, Madrid, Paris..."
           value={destination}
           onChange={(e) =>
             dispatch({

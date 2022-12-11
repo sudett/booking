@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 
+import { useFetch } from "../../hooks/useFetch";
+
 import { useGeneralContext } from "../../contexts/general-context/GeneralContext";
 
 import actionTypes from "../../contexts/general-context/ActionTypes";
@@ -22,7 +24,11 @@ const hotels = [
 ];
 
 const HotelsPage = () => {
-  const { dispatch } = useGeneralContext();
+  const { dispatch, destination, price } = useGeneralContext();
+
+  const { data, loading, fetchData } = useFetch(
+    `http://localhost:8800/api/hotels?city=${destination}&min=${price.minPrice}&max=${price.maxPrice}`
+  );
 
   useEffect(() => {
     dispatch({ type: actionTypes.SET_PAGE, payload: "hotels" });
@@ -32,9 +38,11 @@ const HotelsPage = () => {
     <div className="hotels">
       <SearchBox />
       <ul className="hotels__container">
-        {hotels.map((hotel, idx) => (
-          <HotelCard img={hotel} hotelId={idx + 1} />
-        ))}
+        {loading
+          ? "LOADING"
+          : data?.map((item, idx) => (
+              <HotelCard img={hotels[idx]} key={item._id} {...item} />
+            ))}
       </ul>
     </div>
   );

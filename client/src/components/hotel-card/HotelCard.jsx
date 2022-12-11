@@ -7,62 +7,59 @@ import "./HotelCard.css";
 const HotelCard = ({
   img,
   name,
-  location,
+  title,
+  city,
+  address,
+  type,
+  photos,
+  cheapestPrice,
   distance,
-  text,
   desc,
-  reviews,
-  rate,
-  price,
-  cancellation,
-  airportTaxi,
-  hotelId,
+  _id,
+  rating,
 }) => {
+  console.log(name);
   const navigate = useNavigate();
 
   return (
     <li>
       <div className="hotel">
-        <img className="hotel__img" src={img} alt="hotel" />
+        <img className="hotel__img" src={photos[0] || img} alt={name} />
         <div className="hotel__info">
           <div className="hotel__info-left">
             <div>
-              <h3 className="hotel__title">
-                Academy Plaza HotelOpens in new window
-              </h3>
+              <h3 className="hotel__title">{title}</h3>
               <p>
                 <span className="hotel__location">
-                  Parnell Square, Dublin .{" "}
+                  {address}, {city} .{" "}
                 </span>
-                <span>300 m from center</span>
+                <span>{distance} m from center</span>
               </p>
 
               <span className="hotel__airport-taxi">Free airport taxi</span>
             </div>
             <div>
-              <p>
-                Just off O'Connell Street, Academy Plaza Hotel is a 5-minute
-                walk from Connolly Train Station. The hotel features stylish,
-                air-conditioned rooms with free WiFi, an on-site restaurant.
-              </p>
+              <p>{desc}</p>
 
               <p className="hotel__cancellation">Free cancellation</p>
             </div>
           </div>
 
           <div className="hotel__info-right">
-            <div className="hotel__detail">
-              <div>
-                <span>Very Good</span>
-                <p className="hotel__review">4,267 reviews</p>
+            {rating && (
+              <div className="hotel__detail">
+                <div>
+                  <span>Very Good</span>
+                  <p className="hotel__review">4,267 reviews</p>
+                </div>
+                <span className="favorite__rate hotel__rate">{rating}</span>
               </div>
-              <span className="favorite__rate hotel__rate">8.1</span>
-            </div>
+            )}
             <div className="hotel__availability">
-              <span className="hotel__price">$110</span>
+              <span className="hotel__price">${cheapestPrice}</span>
               <button
                 className="btn btn--available"
-                onClick={() => navigate(`/hotels/${hotelId}`)}
+                onClick={() => navigate(`/hotels/${_id}`)}
               >
                 See availability
               </button>
