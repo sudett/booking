@@ -19,7 +19,7 @@ export const useFetch = (url) => {
 
   useEffect(() => {
     fetchData(url);
-  }, [url]);
+  }, []);
 
   return { fetchData, loading, data, errMessage };
 };

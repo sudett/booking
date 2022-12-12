@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
+import { useFetch } from "../../hooks/useFetch";
+
 import Gallery from "../../components/gallery/Gallery";
 
 import { useGeneralContext } from "../../contexts/general-context/GeneralContext";
@@ -22,8 +24,18 @@ const hotelImages = [
 
 const SingleHotel = () => {
   const { hotelId } = useParams();
-  const { dispatch } = useGeneralContext();
+  const { dispatch, destination, price, dates } = useGeneralContext();
   const [galleryIsOpen, setGalleryIsOpen] = useState(false);
+  const { data, loading } = useFetch(
+    `http://localhost:8800/api/hotels/${hotelId}?city=${destination}&min=${price.minPrice}&max=${price.maxPrice}`
+  );
+
+  const days = () => {
+    const milliseconds = Math.abs(
+      dates.endDate.getTime() - dates.startDate.getTime()
+    );
+    return Math.ceil(milliseconds / (1000 * 60 * 60 * 24));
+  };
 
   useEffect(() => {
     dispatch({ type: "setPage", payload: "single-hotel" });
@@ -36,70 +48,71 @@ const SingleHotel = () => {
 
   return (
     <>
-      <div className="single-hotel">
-        <div className="single-hotel__top">
-          <div>
-            <h2 className="single-hotel__title">
-              Academy Plaza HotelOpens in new window
-            </h2>
-            <p className="single-hotel__location">
-              <MdLocationOn className="icon icon--location" />
-              Parnell Square, Dublin
-            </p>
-            <p>300 m from center . Very Good</p>
-          </div>
-          <button className="btn btn--book">Book now</button>
-        </div>
-        <div className="single-hotel__gallery">
-          {hotelImages
-            .filter((img, idx) => idx < 5)
-            .map((img, idx) => (
-              <img
-                onClick={() => setGalleryIsOpen(true)}
-                key={idx}
-                className={`${identifyClasses(idx)} single-hotel__gallery-img`}
-                src={img}
-                alt="hotel"
-              />
-            ))}
-        </div>
+      {loading
+        ? "LOADING"
+        : data && (
+            <div className="single-hotel">
+              <div className="single-hotel__top">
+                <div>
+                  <h2 className="single-hotel__title">{data.name}</h2>
+                  <p className="single-hotel__location">
+                    <MdLocationOn className="icon icon--location" />
+                    {data.address}, {data.city}
+                  </p>
+                  <p>{data.distance} m from center . Very Good</p>
+                </div>
+                <button className="btn btn--book">Book now</button>
+              </div>
+              <div className="single-hotel__gallery">
+                {data.photos.length > 0
+                  ? data.photos
+                  : hotelImages
+                      .filter((img, idx) => idx < 5)
+                      .map((img, idx) => (
+                        <img
+                          onClick={() => setGalleryIsOpen(true)}
+                          key={idx}
+                          className={`${identifyClasses(
+                            idx
+                          )} single-hotel__gallery-img`}
+                          src={img}
+                          alt="hotel"
+                        />
+                      ))}
+              </div>
 
-        <div className="single-hotel__info">
-          <div>
-            <h3 className="single-hotel__info-title">
-              Stay in the heart of Dublin
-            </h3>
-            <p>
-              Just off O'Connell Street, Academy Plaza Hotel is a 5-minute walk
-              from Connolly Train Station. The hotel features stylish,
-              air-conditioned rooms with free WiFi, an on-site restaurant. The
-              modern bedrooms at the Academy Plaza Hotel are decorated in rich
-              colors. Rooms feature flat-screen TVs, work desks and
-              marble-finished bathrooms. Plaza Bar & Grill serves traditional
-              dishes using fresh local produce. Plaza Bar and Grill offers a
-              variety of teas and coffees. Guests can enjoy traditional full
-              Irish and continental breakfast in Oscars Restaurant, which is
-              located within the hotel.
-            </p>
-          </div>
-          <div className="single-hotel__info-box">
-            <div>
-              <h4 className="single-hotel__info-box-title">
-                Property Highlights
-              </h4>
-              <p>
-                Located in the heart of Dublin, this hotel has an excellent
-                location score of 9.3
-              </p>
+              <div className="single-hotel__info">
+                <div>
+                  <h3 className="single-hotel__info-title">{data.title}</h3>
+                  <p>{data.desc}</p>
+                </div>
+                <div className="single-hotel__info-box">
+                  <div>
+                    <h4 className="single-hotel__info-box-title">
+                      Property Highlights
+                    </h4>
+                    <p>
+                      Located in the heart of Dublin, this hotel has an
+                      excellent location score of 9.3
+                    </p>
+                  </div>
+                  <div>
+                    <h4 className="single-hotel__info-box-title">
+                      Breakfast Info
+                    </h4>
+                    <p>Full English/Irish, Vegetarian, Gluten-free, Buffet</p>
+                  </div>
+                  <p className="single-hotel__info-box-detail">
+                    <span className="single-hotel__info-box-price">
+                      ${days() * data.cheapestPrice}
+                    </span>{" "}
+                    (<span>{days()}</span> nights)
+                  </p>
+                  <button className="btn btn--reserve">Reserve</button>
+                </div>
+              </div>
             </div>
-            <div>
-              <h4 className="single-hotel__info-box-title">Breakfast Info</h4>
-              <p>Full English/Irish, Vegetarian, Gluten-free, Buffet</p>
-            </div>
-            <button className="btn btn--reserve">Reserve</button>
-          </div>
-        </div>
-      </div>
+          )}
       {galleryIsOpen && (
         <Gallery images={hotelImages} setGalleryIsOpen={setGalleryIsOpen} />
       )}

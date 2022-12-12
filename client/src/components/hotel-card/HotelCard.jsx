@@ -18,7 +18,6 @@ const HotelCard = ({
   _id,
   rating,
 }) => {
-  console.log(name);
   const navigate = useNavigate();
 
   return (

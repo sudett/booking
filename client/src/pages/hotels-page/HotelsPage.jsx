@@ -36,7 +36,7 @@ const HotelsPage = () => {
 
   return (
     <div className="hotels">
-      <SearchBox />
+      <SearchBox fetchData={fetchData} />
       <ul className="hotels__container">
         {loading
           ? "LOADING"

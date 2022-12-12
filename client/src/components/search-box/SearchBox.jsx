@@ -7,11 +7,23 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import "./SearchBox.css";
 
-const SearchBox = () => {
+const SearchBox = ({ fetchData }) => {
   const { dates, destination, options, price, dispatch } = useGeneralContext();
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    fetchData(
+      `http://localhost:8800/api/hotels?city=${destination}&min=${price.minPrice}&max=${price.maxPrice}`
+    );
+  };
+
   return (
-    <form className="search-box" method="post" action="">
+    <form
+      className="search-box"
+      method="post"
+      action=""
+      onSubmit={handleSubmit}
+    >
       <h3 className="search-box__title">Search</h3>
       <div className="search-box__group">
         <label htmlFor="destination">Destination</label>
