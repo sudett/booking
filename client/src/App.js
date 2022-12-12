@@ -5,6 +5,7 @@ import HotelsPage from "./pages/hotels-page/HotelsPage";
 import SingleHotel from "./pages/single-hotel/SingleHotel";
 import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
+import LoginPage from "./pages/login-page/LoginPage";
 
 import "./App.css";
 
@@ -18,6 +19,7 @@ function App() {
           <Route index element={<HotelsPage />} />
           <Route path=":hotelId" element={<SingleHotel />} />
         </Route>
+        <Route path="/login" element={<LoginPage />} />
       </Routes>
       <Footer />
     </div>

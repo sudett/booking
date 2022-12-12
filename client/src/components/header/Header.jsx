@@ -1,7 +1,9 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { useGeneralContext } from "../../contexts/general-context/GeneralContext";
+
+import actionTypes from "../../contexts/general-context/ActionTypes";
 
 import { FaBed, FaCar, FaTaxi } from "react-icons/fa";
 import { MdOutlineFlight, MdOutlineAttractions } from "react-icons/md";
@@ -9,7 +11,8 @@ import { MdOutlineFlight, MdOutlineAttractions } from "react-icons/md";
 import "./Header.css";
 
 const Header = () => {
-  const { page } = useGeneralContext();
+  const navigate = useNavigate();
+  const { page, auth, dispatch } = useGeneralContext();
 
   return (
     <div className="container">
@@ -47,10 +50,27 @@ const Header = () => {
               </Link>
             </li>
           </ul>
-          <div className="btns__container">
-            <button className="btn btn--login">Register</button>
-            <button className="btn btn--login">Login</button>
-          </div>
+          {!auth.user ? (
+            <div className="btns__container">
+              <button className="btn btn--login">Register</button>
+              <button
+                className="btn btn--login"
+                onClick={() => navigate("/login")}
+              >
+                Login
+              </button>
+            </div>
+          ) : (
+            <div className="btns__container">
+              <span>{auth.user.username}</span>
+              <button
+                className="btn btn--logout"
+                onClick={() => dispatch({ type: actionTypes.LOGOUT })}
+              >
+                Logout
+              </button>
+            </div>
+          )}
         </div>
 
         {page === "home" && (

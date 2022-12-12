@@ -4,6 +4,10 @@ const actionTypes = {
   SET_DATES: "SET_DATES",
   SET_OPTIONS: "SET_OPTIONS",
   SET_PRICE: "SET_PRICE",
+  LOGIN_START: "LOGIN_START",
+  LOGIN_SUCCESS: "LOGIN_SUCCESS",
+  LOGIN_FAILURE: "LOGIN_FAILURE",
+  LOGOUT: "LOGOUT",
 };
 
 export default actionTypes;

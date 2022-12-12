@@ -48,6 +48,7 @@
 
 .btns__container {
   display: flex;
+  align-items: center;
   gap: 2rem;
 }
 
@@ -58,7 +59,8 @@
   border-radius: 2px;
 }
 
-.btn--login {
+.btn--login,
+.btn--logout {
   color: var(--color-blue-primary);
   padding: 0.5rem 1rem;
 }
