@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 import { useFetch } from "../../hooks/useFetch";
 
 import Gallery from "../../components/gallery/Gallery";
+import Modal from "../../components/modal/Modal";
 
 import { useGeneralContext } from "../../contexts/general-context/GeneralContext";
 
@@ -24,8 +25,12 @@ const hotelImages = [
 
 const SingleHotel = () => {
   const { hotelId } = useParams();
-  const { dispatch, destination, price, dates } = useGeneralContext();
+  const navigate = useNavigate();
+
+  const { dispatch, destination, price, dates, auth } = useGeneralContext();
   const [galleryIsOpen, setGalleryIsOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const { data, loading } = useFetch(
     `http://localhost:8800/api/hotels/${hotelId}?city=${destination}&min=${price.minPrice}&max=${price.maxPrice}`
   );
@@ -44,6 +49,12 @@ const SingleHotel = () => {
   const identifyClasses = (idx) => {
     if (idx === 0) return "gallery__img0";
     if (idx === 1) return "gallery__img1";
+  };
+
+  const handleReserve = () => {
+    if (!auth.user) return navigate("/login");
+
+    setIsModalOpen(true);
   };
 
   return (
@@ -108,13 +119,20 @@ const SingleHotel = () => {
                     </span>{" "}
                     (<span>{days()}</span> nights)
                   </p>
-                  <button className="btn btn--reserve">Reserve</button>
+                  <button className="btn btn--reserve" onClick={handleReserve}>
+                    Reserve
+                  </button>
                 </div>
               </div>
             </div>
           )}
+
       {galleryIsOpen && (
         <Gallery images={hotelImages} setGalleryIsOpen={setGalleryIsOpen} />
+      )}
+
+      {isModalOpen && (
+        <Modal setIsModalOpen={setIsModalOpen} hotelId={hotelId} />
       )}
     </>
   );
